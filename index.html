@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Interactivo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+</head>
+<body>
+    <object id="mapaCentroAmerica" type="image/svg+xml" data="MapaCentroAmerica.svg">Your browser does not support SVG</object>
+<!-- Modal -->
+<div class="modal fade" id="departamentoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Información del Departamento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Aquí se mostrará la información del departamento -->
+                <p id="departamentoInfo">Información del departamento seleccionado.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+   <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Obtener el objeto SVG
+    const svgObject = document.getElementById('mapaCentroAmerica');
+
+    // Asegúrate de que el contenido del SVG esté completamente cargado
+    svgObject.addEventListener('load', function() {
+        // Ahora el contenido del SVG está cargado y puede ser manipulado
+        const svgDoc = svgObject.contentDocument;
+        const departamentos = svgDoc.querySelectorAll('.departamento');
+
+        // Definir la información de los departamentos
+        const infoDepartamentos = {
+            'Intibucá': 'Información de Intibucá...',
+            // ... otras entradas para departamentos
+        };
+
+        // Iterar sobre cada departamento y agregar un evento de clic para abrir la modal
+        departamentos.forEach(departamento => {
+            departamento.addEventListener('click', function() {
+                const nombreDepartamento = departamento.getAttribute('name');
+                const info = infoDepartamentos[nombreDepartamento] || 'Información no disponible';
+
+                // Actualizar el contenido de la modal con la información del departamento
+                const modalTitle = document.querySelector('.modal-title');
+                const departamentoInfo = document.getElementById('departamentoInfo');
+
+                modalTitle.textContent = `Información de ${nombreDepartamento}`;
+                departamentoInfo.textContent = info;
+
+                // Abrir la modal
+                const departamentoModal = new bootstrap.Modal(document.getElementById('departamentoModal'));
+                departamentoModal.show();
+            });
+        });
+    });
+});
+
+
+   </script>
+  
+    
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
